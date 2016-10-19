@@ -4,23 +4,18 @@ angular.module("todoListApp", [])
 // This line below
     $scope.helloConsole = dataService.helloConsole;
 
-    $scope.learningNgChange = function () {
-        console.log("Input changed!");
-    };
-
-  $scope.todos = [
-    {"name": "Water lawn"},
-    {"name": "Walk the dog"},
-    {"name": "Get the mail"},
-    {"name": "Sleep"},
-    {"name": "Clean the car"},
-    {"name": "Clean the house"},
-  ]
-
+    dataService.getTodos(function(response) {
+        console.log(response.data);
+        $scope.todos = response.data
+    });
 })
-.service('dataService', function(){
+.service('dataService', function($http) {
 
     this.helloConsole = function() {
       console.log('This is hello console service!');
+    }
+
+    this.getTodos = function(callback) {
+        $http.get('mock/todos.json').then(callback)
     }
 });
